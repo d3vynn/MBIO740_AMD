@@ -2,8 +2,11 @@
 
 
 ############NEW FUNCTION: Calculate Catchability based on complexity
-complexity <- 3.91  #I set this to get the "current" CC i have in there now
-carrying_capacity_complex <- exp(4.599854) * exp(0.316063*complexity)
+source('Complexity_Herbivore_Relationship.R')
+
+#complexity will be change each year based on mollie's model
+complexity <- 0.93  #I set this to get the "current" CC i have in there now
+carrying_capacity_complex <- exp(coef(fit)[1]) * exp(coef(fit)[2]*complexity)
 
 
 

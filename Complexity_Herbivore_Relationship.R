@@ -10,18 +10,25 @@ data <- read.csv("wpd_datasets.csv")
 #chubs: 1.506
 #parrots: 4.7057
 #overall average: 2.259
-#multiply y values by this
+#multiply y values by this: 1024.66516
 
-data$Line_Y_Weight <- data$Line_Y * 2.259
+
+#abundance / 176.714586764m2 = fish per m2 * average weight of fish = g/m2
+
+fish_grams <- 1024.66516
+area <- 176.714586764
+
+data$Line_Y_Weight <- (data$Line_Y * fish_grams) / area
 
 fit<-lm(log(Line_Y_Weight)~Line_X, data=data)
 summary(fit)
 
-f1 <- function (X) {
-  exp(4.599854) * exp(0.316063*X)
+
+f1 <- function (X, slope, int) {
+  exp(int) * exp(slope*X)
 }
 
-Pred_Y <- f1(data$Line_X)
+Pred_Y <- f1(data$Line_X, slope=coef(fit)[2], coef(fit)[1])
 data <- cbind(data, Pred_Y)
 
 ggplot() + 
