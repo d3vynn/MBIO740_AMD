@@ -59,13 +59,6 @@ catchability <- 1
 
 #fish
 intrinsic_growth_rate <- 0.3 #0.3 from fishbase
-discrete_growth_rate <- calculate_discrete_growth(intrinsic_growth_rate) 
-
-#temp
-source('SST_Projections.R')
-SST_dev <- projections[['anomaly']]
-#SST_dev <- array(1, dim = c(timesteps))
-slope <- 0.1
 
 ###Economic inputs
 price <- 0.01448438 #price per g in 2021, calculated in seafoodprices.R script 
@@ -73,8 +66,7 @@ value_added_ratio <- 0.9  #from Grafeld et al. 2017
 
 ##dispersal
 S <- 0.8 # site-fidelity parameter, value of 0 results in common pool dispersal and a value of 1 means no movement between patches (diagonal values in the matrix = 1)
-#look at studies, maybe make adult site fidelity really high so there is a little movement but not too much - look at some papers.
-S_recruit <- 0 #probably low site fidelity for recruits but look at papers
+S_recruit <- 0 # low site fidelity for recruits
 
 
 #Adult dispersal
@@ -149,7 +141,7 @@ dispersal_juvenile <- function(patch_area, number_patches, S_recruit) {
   return(tmp2) 
 }
 
-##############################INITIALIZE STATE VARIABLES##########################################################
+#####################################INITIALIZE STATE VARIABLES##########################################################
 # State variables
 population <- array(NA, dim = c(timesteps, number_patches))
 recruits <- array(NA, dim = c(timesteps, number_patches)) 
@@ -167,7 +159,7 @@ harvest <- array(NA, dim = c(timesteps, number_patches))
 escapement <- array(NA, dim = c(timesteps, number_patches))
 
 
-############MODEL CODE###############################
+###############################################MODEL CODE#################################################################
 for(t in 2:timesteps){
   tmp1 <- dispersal(patch_area, number_patches, S)
   tmp2 <- dispersal(patch_area, number_patches, S_recruit)
