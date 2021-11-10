@@ -5,6 +5,7 @@
 source('Complexity_Herbivore_Relationship.R')
 
 #complexity will be change each year based on mollie's model
+#new complexity - starting complexity
 complexity_deviation <- 0.05
 carrying_capacity <- 342
 carrying_capacity_complex <- carrying_capacity * (1 + complexity_deviation)
