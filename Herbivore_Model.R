@@ -5,11 +5,9 @@
 source('Complexity_Herbivore_Relationship.R')
 
 #complexity will be change each year based on mollie's model
-complexity <- 0.93  #I set this to get the "current" CC i have in there now
-carrying_capacity_complex <- exp(coef(fit)[1]) * exp(coef(fit)[2]*complexity)
-
-
-
+complexity <- 0.05
+carrying_capacity <- 342
+carrying_capacity_complex <- carrying_capacity * (1 + complexity)
 
 
 
