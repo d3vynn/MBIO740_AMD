@@ -49,6 +49,9 @@ inv.logit <- function(x){
   exp(x)/(1 + exp(x))}
 
 
+logit <- function(x){
+  log(x/(1-x))
+}
 # Example input values
 # n <- 100
 # min.size <- -2.7  # (2 * sqrt(10^-2.7)/pi) # approx 5 cm diameter
@@ -106,4 +109,14 @@ IPMFunc <- function(Parameters, SENS=TRUE){
                 ReproVec=reprodvalue, y=y))
   }
 }
+
+################################################################################
+# Complexity from stable size distributions
+# Attempting to model the relationship
+
+Complexity <- function(StableSizeDistibution, SizeClasses){
+  
+  sizespecific_comp <- inv.logit(SizeClasses)
+  Comp_full         <- StableSizeDistibution * sizespecific_comp
+  complexity        <- sum(Comp_full)}
 

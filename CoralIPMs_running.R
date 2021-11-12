@@ -12,7 +12,9 @@ Ps <- list(g.int = -0.295459528,
            rec.size =	-2.868638,
            min.size = -3,
            max.size = 2,
-           n = 100)
+           n = 100,
+           rec_val = 5,
+           fishbiomort = 0.)
 
 recs <- seq(0.5,20,length.out = 10)
 fbm  <- seq(0.05, 0.95, length.out = 10)
@@ -34,7 +36,7 @@ for (i in 1:length(recs)){
 ################################################################################
 ls <- list.files(Dirc)
 
-load(paste0(Dirc,ls[1])) # this is an .rdata file with the data named "Data"
+load(paste0(Dirc,ls[500])) # this is an .rdata file with the data named "Data"
 
 popgrowthrate      <- Data$Lambda
 sizeclasses        <- Data$y
@@ -51,3 +53,6 @@ plot(sizeclasses, Vector_inds, xlab = "Coral Diameter (log-scale)",
      main= paste0("Population Growth Rate = ", popgrowthrate))
 
 
+################################################################################
+
+test <- Complexity(SSD, Data$y)
