@@ -64,7 +64,7 @@ number_patches <- 1
 patch_area_m2 <- patch_area * 5.04e+8
 
 #fishing
-fishing_effort <- 0.3
+fishing_effort <- 0.1
 catchability <- 1
 
 #fish
