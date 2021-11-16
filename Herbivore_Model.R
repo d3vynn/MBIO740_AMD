@@ -79,6 +79,7 @@ value_added_ratio <- 0.9  #from Grafeld et al. 2017
 #####################################INITIALIZE STATE VARIABLES##########################################################
 # State variables
 population <- array(NA, dim = c(timesteps, number_patches))
+carrying_capacity_complex <- array(NA, dim = c(timesteps, number_patches))
 #recruits <- array(NA, dim = c(timesteps, number_patches)) 
 #recruits_dispersal <- array(NA, dim = c(timesteps, number_patches)) 
 
