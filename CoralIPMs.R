@@ -24,7 +24,7 @@ AllometricGrowth <- function(y, x, g.int, g.slp, g.var){
 # correlation between coral mortality rate and biomass 
 
 Survival <- function(x, s.int, s.slp, s.slp2, fishbiomort){
-  surv <- inv.logit(s.int + s.slp * x + s.slp2 * x^2) * (fishbiomort)
+  surv <- inv.logit(s.int + s.slp * x + s.slp2 * x^2) * (1 - fishbiomort)
   return(surv)}
 
 #### Recruitment Function
@@ -40,7 +40,7 @@ Survival <- function(x, s.int, s.slp, s.slp2, fishbiomort){
 OpenRecruitment <- function(y, x, rec_val, rec.size, fishbiomort){
   sizes      <- which(x <= rec.size)
   out        <- rep(0, length(x))
-  out[sizes] <- rec_val * (fishbiomort) 
+  out[sizes] <- rec_val * (1 - fishbiomort)
   return(out)}
 
 

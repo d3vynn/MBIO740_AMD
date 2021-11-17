@@ -37,7 +37,7 @@ calculate_fraction_harvested <- function(fishing_effort, catchability) {
 
 #Fisheries Harvest
 calculate_fisheries_harvest <- function(population, fraction_harvested, patch_area_m2) {
-  harvest <- population * fraction_harvested * patch_area_m2
+  harvest <- population * fraction_harvested * patch_area
   return(harvest)
 }
 
