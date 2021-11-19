@@ -43,11 +43,8 @@ OpenRecruitment <- function(y, x, rec_val, rec.size, fishbiomort){
   out[sizes] <- rec_val * (1 - fishbiomort)
   return(out)}
 
-
-
 inv.logit <- function(x){
   exp(x)/(1 + exp(x))}
-
 
 logit <- function(x){
   log(x/(1-x))
@@ -112,7 +109,6 @@ IPMFunc <- function(Parameters, SENS=TRUE){
 
 ################################################################################
 # Complexity from stable size distributions
-# Attempting to model the relationship
 
 Complexity <- function(Lambda, StableSizeDistibution, SizeClasses){
   
@@ -120,6 +116,21 @@ Complexity <- function(Lambda, StableSizeDistibution, SizeClasses){
   Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
   complexity        <- sum(Comp_full)
   
-  #test <- glm(Comp_full ~ SizeClasses)
-  }
+}
+
+Complexity.exp <- function(Lambda, StableSizeDistibution, SizeClasses){
+  
+  sizespecific_comp <- exp(SizeClasses)
+  Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
+  complexity        <- sum(Comp_full)
+  
+}
+
+Complexity.log <- function(Lambda, StableSizeDistibution, SizeClasses){
+  
+  sizespecific_comp <- log(SizeClasses)
+  Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
+  complexity        <- sum(Comp_full)
+  
+}
 
