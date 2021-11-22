@@ -110,27 +110,19 @@ IPMFunc <- function(Parameters, SENS=TRUE){
 ################################################################################
 # Complexity from stable size distributions
 
-Complexity <- function(Lambda, StableSizeDistibution, SizeClasses){
+Complexity <- function(Lambda, StableSizeDistibution, SizeClasses, ModType){
   
-  sizespecific_comp <- inv.logit(SizeClasses)
+  if (ModType == "Logit"){
+    sizespecific_comp <- inv.logit(SizeClasses)}
+  
+  if (ModType == "Exp"){
+    sizespecific_comp <- exp(SizeClasses)
+  }
+  if (ModType == "Log"){
+    sizespecific_comp <- log(SizeClasses)
+  } 
   Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
   complexity        <- sum(Comp_full)
-  
 }
 
-Complexity.exp <- function(Lambda, StableSizeDistibution, SizeClasses){
-  
-  sizespecific_comp <- exp(SizeClasses)
-  Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
-  complexity        <- sum(Comp_full)
-  
-}
-
-Complexity.log <- function(Lambda, StableSizeDistibution, SizeClasses){
-  
-  sizespecific_comp <- log(SizeClasses)
-  Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
-  complexity        <- sum(Comp_full)
-  
-}
 

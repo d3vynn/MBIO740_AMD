@@ -50,7 +50,7 @@ calculate_escaped_stock_biomass <- function(population, fraction_harvested) {
 
 ############################DEFINE PARAMETERS#############################################################
 ##Time
-timesteps <- 50 #years
+timesteps <- 100 #years
 ##Area
 patch_area <- 1 #MAKING IT NONSPATIAL - ALL ONE PATCH. NO PROTECTED AREA. so there isn't any dispersal happening
 #number_patches <- length(patch_area) 
