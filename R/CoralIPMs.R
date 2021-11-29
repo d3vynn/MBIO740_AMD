@@ -119,7 +119,7 @@ Complexity <- function(Lambda, StableSizeDistibution, SizeClasses, ModType){
     sizespecific_comp <- exp(SizeClasses)
   }
   if (ModType == "Log"){
-    sizespecific_comp <- log(SizeClasses)
+    sizespecific_comp <- log(10^SizeClasses)
   } 
   Comp_full         <- (Lambda * StableSizeDistibution) * sizespecific_comp
   complexity        <- sum(Comp_full)

@@ -14,7 +14,10 @@
 source('Herbivore_Model.R')
 source('CoralIPMs.R')
 
-Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\DistrubanceSims\\"
+BaseD <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\"
+CType <- c("LowIntComp", "IntIntComp")
+c <- 2
+Dir <- paste0(BaseD, "\\DisturbanceSims\\", CType[c], "\\")
 
 ComplexVer <- c("Logit", "Exp", "Log")[1]
 FishPress  <- seq(0, 0.5, length.out = 10)[3]
@@ -22,9 +25,7 @@ RecVals    <- seq(2, 13, length.out = 3)
 HName      <- as.character(round(FishPress,2))
 CName      <- as.character(round(RecVals,2))
 
-
-
-Ps <- list(g.int = -0.295459528,
+Params <- list(g.int = -0.295459528,
            g.slp = 0.897642821,
            g.var = 0.148459262,
            s.int = 6.619306118,
@@ -38,13 +39,14 @@ Ps <- list(g.int = -0.295459528,
            fishbiomort = 0)
 
 timePre  <- 20
-timePost <- 22
+timePost <- 21
 Disturb <- 0.5
 DistType <- c("Hurricane", "Disease", "Bleaching")
 
 for(dis in 1:3){
   for(d in 1:length(ComplexVer)){
     for(c in 1:length(RecVals)){
+      Ps          <- Params
       Ps$rec_val  <- RecVals[c]
       Comp <- fbm <- rep(0,length=timesteps)
       complexity_deviation <- IPMlams  <- rep(0,length=timesteps)
@@ -53,7 +55,7 @@ for(dis in 1:3){
       SSDs        <- IPM$StableSizeDist
       IPMssds[,1] <- SSDs
       IPMlams[1]  <- 0
-      Comp[1]     <- 0
+      Comp[1]     <- 0.5
       fbm[1]      <- 0
       complexity_deviation[1] <- 1
       for(h in 1:length(FishPress)){
@@ -109,14 +111,14 @@ for(dis in 1:3){
         }
         
         if(dis == 1){
-          Comp[21]       <- Comp[20] * Disturb # simulating a hurricane
+          Comp[t + 1]       <- Comp[t] * Disturb # simulating a hurricane
           }
         if(dis == 2){
-          population[21] <- population[20] * Disturb # simulating a disease outbreak
+          population[t + 1] <- population[t] * Disturb # simulating a disease outbreak
           
         }
         if(dis == 3){
-          IPMlams[21]    <- IPMlams[20] * Disturb # attempting to simulate a bleaching event
+          IPMlams[t + 1]    <- IPMlams[t] * Disturb # attempting to simulate a bleaching event
         }
         
         for(t in timePost:timesteps){

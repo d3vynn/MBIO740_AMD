@@ -10,30 +10,31 @@
 source('Herbivore_Model.R')
 source('CoralIPMs.R')
 
-Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\"
+Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\IntIntComp\\"
 
-ComplexVer <- c("Logit", "Exp", "Log")[3]
+ComplexVer <- c("Logit", "Exp", "Log")
 FishPress  <- seq(0, 0.5, length.out = 10)
 RecVals    <- seq(1, 15, length.out = 10)
 HName      <- as.character(round(FishPress,2))
 CName      <- as.character(round(RecVals,2))
 
-Ps <- list(g.int = -0.295459528,
-           g.slp = 0.897642821,
-           g.var = 0.148459262,
-           s.int = 6.619306118,
-           s.slp = 4.356206835,
-           s.slp2 = 0.60252172,	
-           rec.size =	-2.868638,
-           min.size = -3,
-           max.size = 2,
-           n = 100,
-           rec_val = 5,
-           fishbiomort = 0)
+Params <- list(g.int = -0.295459528,
+               g.slp = 0.897642821,
+               g.var = 0.148459262,
+               s.int = 6.619306118,
+               s.slp = 4.356206835,
+               s.slp2 = 0.60252172,	
+               rec.size =	-2.868638,
+               min.size = -3,
+               max.size = 2,
+               n = 100,
+               rec_val = 5,
+               fishbiomort = 0)
 
 
 for(d in 1:length(ComplexVer)){
   for(c in 1:length(RecVals)){
+    Ps          <- Params
     Ps$rec_val  <- RecVals[c]
     Comp <- fbm <- rep(0,length=timesteps)
     complexity_deviation <- IPMlams  <- rep(0,length=timesteps)
@@ -42,7 +43,7 @@ for(d in 1:length(ComplexVer)){
     SSDs        <- IPM$StableSizeDist
     IPMssds[,1] <- SSDs
     IPMlams[1]  <- 0
-    Comp[1]     <- 0
+    Comp[1]     <- 0.5
     fbm[1]      <- 0
     complexity_deviation[1] <- 1
     for(h in 1:length(FishPress)){
