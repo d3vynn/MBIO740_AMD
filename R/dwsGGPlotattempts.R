@@ -1,62 +1,68 @@
-# Heat Map plots
-library(ggplot2)
-library(latex2exp)
+
 library(stringr)
 
 BaseD <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\"
 IntCp <- c("LowIntComp","IntIntComp")
-c <- 2
-Dir   <-  paste0( BaseD, "ComplexitySims\\", IntCp[c], "\\")
-ls    <- list.files(Dir)
+SimTy <- c("ComplexitySims", "DisturbanceSims")
+s <- 1
+
+
 
 ### Combine data into a loooooong dataframe
 # to then use for ggplots
 dataf <- data.frame()
+for (c in 1:2){
+  Dir <-  paste0(BaseD, SimTy[s], "\\", IntCp[c], "\\")
+  ls  <- list.files(Dir)
 for (l in 1:length(ls)){
   load(paste0(Dir,ls[l]))
-  name <- str_split(ls[l], pattern = "_")
+  name <- str_split(ls[l], pattern = "_")[[1]]
   
-  FishPopulation  <- FullModel$FishPopulation[,1]
-  FishHarvest     <- FullModel$Harvest[,1]
-  Lambdas         <- FullModel$Lambdas
-  Complexity      <- FullModel$rawComplex
-  Compdeviance    <- FullModel$dComplex
-  CompType        <- rep(name[[1]][5], length.out=length(FishPopulation))
-  IntRecVal       <- rep(name[[1]][3], length.out=length(FishPopulation))
-  FishingPressure <- rep(name[[1]][1], length.out=length(FishPopulation))
+  time  <- seq(100)
   
-  ds <- data.frame(FishPopulation=FishPopulation,
-                   FishHarvest=FishHarvest,
-                   Lambdas=Lambdas,
-                   Complexity=Complexity,
-                   Compdeviance=Compdeviance,
+  fpMod <- lm(FullModel$FishPopulation[3:20,1] ~ time[3:20])
+  fhMod <- lm(FullModel$Harvest[3:20,1] ~ time[3:20])
+  lMod  <- lm(FullModel$Lambdas[3:20] ~ time[3:20])
+  cMod  <- lm(FullModel$rawComplex[3:20] ~ time[3:20])
+  
+  fishPopSlp <- coef(fpMod)[[2]]
+  fishPopFin <- FullModel$FishPopulation[100,1]
+  harvestSlp <- coef(fhMod)[[2]]
+  harvestFin <- FullModel$Harvest[100,1]
+  lambdaSlp  <- coef(lMod)[[2]]
+  lambdaFin  <- FullModel$Lambdas[100]
+  complxSlp  <- coef(cMod)[[2]]
+  complxFin  <- FullModel$rawComplex[100]
+  compDevFin <- FullModel$dComplex[100]
+  compDevVar <- sd(FullModel$dComplex)
+  CompType   <- name[5]
+  
+  if(length(name)  == 7){
+    CompVers <- str_split(name[7], pattern = ".rdata")[[1]][1]
+  }
+  else{CompVers <- "V1"}
+  
+  
+  ds <- data.frame(fishPopSlp=fishPopSlp,
+                   fishPopFin=fishPopFin,
+                   harvestSlp=harvestSlp,
+                   harvestFin=harvestFin,
+                   lambdaSlp=lambdaSlp,
+                   lambdaFin=lambdaFin,
+                   complxSlp=complxSlp,
+                   complxFin=complxFin,
+                   compDevFin=compDevFin,
+                   compDevVar=compDevVar,
+                   cpStartV=IntCp[c],
                    CompType=CompType,
-                   IntRecVal=IntRecVal,
-                   FishingPressure=FishingPressure)
+                   CompVers=CompVers,
+                   RecVal=as.factor(name[3]),
+                   FishingEffrt=as.factor(name[1]),
+                   IntComp=IntCp[c])
   
   dataf <- rbind(dataf, ds)
 }
-ns <- paste0(IntCp[c], "_longData_CompSims.rdata")
+}
+ns <- paste0(SimTy[s], "_meatmapData_fixed.rdata")
 save(dataf, file=paste0(BaseD,ns))
 
-
-################################################################################
-
-
-
-
-
-PlotName = ggplot(DATAName, aes(x=, y=, fill=))+
-  geom_tile(color = "black")+
-  scale_x_discrete(TeX(""),
-                   limits=c()) +
-  scale_y_discrete(TeX("")) +
-  scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
-                       limits = c(-10,10))+
-  labs(caption = paste0(Temps[t], " ", Specs[s]))+
-  coord_fixed()+
-  guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))

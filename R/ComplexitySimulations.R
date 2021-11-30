@@ -10,9 +10,12 @@
 source('Herbivore_Model.R')
 source('CoralIPMs.R')
 
-Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\IntIntComp\\"
+Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\LowIntComp\\"
 
 ComplexVer <- c("Logit", "Exp", "Log")
+compMean   <- c(7,50,90)
+compScale  <- c(2,10,20)
+
 FishPress  <- seq(0, 0.5, length.out = 10)
 RecVals    <- seq(1, 15, length.out = 10)
 HName      <- as.character(round(FishPress,2))
@@ -43,7 +46,7 @@ for(d in 1:length(ComplexVer)){
     SSDs        <- IPM$StableSizeDist
     IPMssds[,1] <- SSDs
     IPMlams[1]  <- 0
-    Comp[1]     <- 0.5
+    Comp[1]     <- 0.001
     fbm[1]      <- 0
     complexity_deviation[1] <- 1
     for(h in 1:length(FishPress)){
@@ -60,7 +63,8 @@ for(d in 1:length(ComplexVer)){
             IPMssds[,t] <- SSDs
             IPMlams[t] <- IPM$Lambda
             
-            Comp[t] <- Complexity(IPMlams[t], SSDs, sizeclasses, ModType = ComplexVer[d])
+            Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
+                                  mean=compMean[d], scale = compScale[d])
             complexity_deviation[t] <- Comp[t] / Comp[t-1] 
             
             carrying_capacity_complex[t] <- calculate_carrying_capacity_complex(carrying_capacity, 
@@ -105,7 +109,7 @@ for(d in 1:length(ComplexVer)){
                         dComplex=complexity_deviation,
                         Lambdas=IPMlams)
       
-      name <- paste0(HName[h],2, "_Effort_", CName[c],"_Rec_",ComplexVer[d],"_ComplexityFunc.rdata")
+      name <- paste0(HName[h], "_Effort_", CName[c],"_Rec_",ComplexVer[d],"_ComplexityFunc_V2.rdata")
       
       save(FullModel, file=paste0(Dir,name))
       

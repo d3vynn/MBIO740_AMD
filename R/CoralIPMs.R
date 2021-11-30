@@ -125,4 +125,28 @@ Complexity <- function(Lambda, StableSizeDistibution, SizeClasses, ModType){
   complexity        <- sum(Comp_full)
 }
 
+################################################################################
+# Complexity from stable size distributions
+CDFs <- function(x, mean, scale){
+  CDF <- 1 / (exp(-(x-mean)/ scale) + 1)
+  return(CDF)
+  }
 
+ComplexityV2 <- function(Lambda, StableSizeDistibution, 
+                         SizeClasses, mean, scale){
+  
+  sizespecific_comp <- CDFs(10^SizeClasses, mean, scale)
+  Comp_full         <- (Lambda * StableSizeDistibution) * 
+    sizespecific_comp
+  complexity        <- sum(Comp_full)
+  
+}
+
+
+
+# Testing out potential scale and mean values
+# ss <- seq(-3,3,length.out = 100)
+# a <- 10^IPM$y
+# plot(CDFs(a,7,2) ~ a, ylim = c(0,1.2))
+# lines(CDFs(a,50,10) ~ a)
+# lines(CDFs(a,90,20) ~ a)
