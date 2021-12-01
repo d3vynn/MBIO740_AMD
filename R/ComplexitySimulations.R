@@ -10,7 +10,7 @@
 source('Herbivore_Model.R')
 source('CoralIPMs.R')
 
-Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\LowIntComp\\"
+Dir <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\ComplexitySims\\IntIntComp\\"
 
 ComplexVer <- c("Logit", "Exp", "Log")
 compMean   <- c(7,50,90)
@@ -46,7 +46,7 @@ for(d in 1:length(ComplexVer)){
     SSDs        <- IPM$StableSizeDist
     IPMssds[,1] <- SSDs
     IPMlams[1]  <- 0
-    Comp[1]     <- 0.001
+    Comp[1]     <- 0.5
     fbm[1]      <- 0
     complexity_deviation[1] <- 1
     for(h in 1:length(FishPress)){

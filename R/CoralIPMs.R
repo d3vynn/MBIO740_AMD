@@ -132,6 +132,7 @@ CDFs <- function(x, mean, scale){
   return(CDF)
   }
 
+
 ComplexityV2 <- function(Lambda, StableSizeDistibution, 
                          SizeClasses, mean, scale){
   
