@@ -12,13 +12,14 @@ load(file=paste0(BaseD,ns))
 #V2
 V2dats  <- dataf[dataf$CompVers == "V2",]
 V2datsL <- V2dats[V2dats$IntComp == "LowIntComp",]
+V2datsL <- V2datsL[V2datsL$CompType=="Logit",]
 Rvals  <- unique(V2datsL$RecVal)
 Effvs  <- unique(V2dats$FishingEffrt)
 CompT  <- unique(V2dats$CompType)
 
 
 fishPopSLP = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopSlp))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ # color = "black"
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -32,14 +33,17 @@ fishPopSLP = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopSlp))+
                                   middle = "orange",
                                   high="red"),
                        limits = c(-5,25))+
+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  # geom_contour()+
+  theme_classic()
+
 
 fishPopFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopFin))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ 
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -56,12 +60,13 @@ fishPopFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopFin))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 
 harvestSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestSlp))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ 
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -78,11 +83,12 @@ harvestSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestSlp))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 HarvestFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestFin))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ #geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -99,12 +105,14 @@ HarvestFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestFin))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 
 lambdaSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaSlp))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ #geom_tile(color = "black")+
+  #geom_contour(aes(x=RecVal, y=FishingEffrt, z=lambdaSlp), color="white")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -113,19 +121,20 @@ lambdaSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaSlp))+
                    limits = c("1", "2.56", "4.11", "5.67", 
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
-  scale_fill_gradientn(TeX(""),
+  scale_fill_gradientn(TeX("$\\frac{d\\lambda}{dt}$"),
                        colours= c(low="blue",
                                   middle = "orange",
                                   high="red"),
                        limits = c(-0.03,0.05))+
   #labs(caption =)+
-  coord_fixed()+
+  #coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 lambdaFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaFin))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ #geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -142,11 +151,12 @@ lambdaFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaFin))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 complxSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxSlp))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+#geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -163,11 +173,12 @@ complxSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxSlp))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 complxFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxFin))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ #geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -184,11 +195,12 @@ complxFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxFin))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 compDevVar = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevVar))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+#geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -205,12 +217,13 @@ compDevVar = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevVar))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
 
 
 compDevFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevFin))+
-  geom_tile(color = "black")+
+  geom_raster(interpolate = TRUE)+ #geom_tile(color = "black")+
   scale_y_discrete(TeX("Fishing Pressure"),
                    limits=c("0","0.06", "0.11", "0.17",
                             "0.22", "0.28", "0.33","0.39",
@@ -227,5 +240,39 @@ compDevFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevFin))+
   #labs(caption =)+
   coord_fixed()+
   guides(fill = guide_colourbar(barwidth = 1,
-                                barheight = 25))+
-  facet_wrap(~CompType)
+                                barheight = 10))+
+  #facet_wrap(~CompType)
+  theme_classic()
+
+
+Plots <- list(fishPopSLP,
+              fishPopFIN,
+              harvestSlp,
+              HarvestFIN,
+              lambdaSlp,
+              lambdaFin,
+              complxSlp,
+              complxFin,
+              compDevVar,
+              compDevFin)
+
+#print(Plots)
+
+NamesP <- c("fishPopSLP",
+            "fishPopFIN",
+            "harvestSlp",
+            "HarvestFIN",
+            "lambdaSlp",
+            "lambdaFin",
+            "complxSlp",
+            "complxFin",
+            "compDevVar",
+            "compDevFin")
+
+for (i in 1:length(NamesP)){
+  ggsave(filename = paste0(NamesP[i], ".png"),
+         path = paste0(BaseD, "Figures\\"),
+         plot = Plots[[i]],
+         width = 5,
+         height = 5)
+}

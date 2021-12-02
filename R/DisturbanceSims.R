@@ -41,12 +41,11 @@ Params <- list(g.int = -0.295459528,
            fishbiomort = 0)
 
 DistTime  <- 51
-timePost <- 53
-Disturb <- 0.5
+Disturb <- round(seq(0.1,0.95,length.out = 10),2)
 DistType <- c("Hurricane", "Disease", "Bleaching")
 
 for(dis in 1:3){
-  for(d in 1:length(ComplexVer)){
+  for(d in 1:length(Disturb)){
     for(c in 1:length(RecVals)){
       Ps          <- Params
       Ps$rec_val  <- RecVals[c]
@@ -58,7 +57,7 @@ for(dis in 1:3){
       IPMssds[,1] <- SSDs
       IPMlams[1]  <- 0
       Comp[1]     <- 0.001
-      fbm[1]      <- 0
+      fbm[1]      <- 0.001
       complexity_deviation[1] <- 1
       for(h in 1:length(FishPress)){
         fishing_effort <- FishPress[h]
@@ -72,8 +71,8 @@ for(dis in 1:3){
               sizeclasses <- IPM$y
               IPMssds[,t] <- SSDs
               
-              IPMlams[t] <- IPMlams[t] - (IPMlams[t] * Disturb)
-              Comp[t] <- Comp[t-1] - (Comp[t-1] * Disturb)
+              #IPMlams[t] <- IPMlams[t] - (IPMlams[t] * (Disturb-0.2))
+              Comp[t] <- Comp[t-1] - (Comp[t-1] * Disturb[d])
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
               carrying_capacity_complex[t] <- calculate_carrying_capacity_complex(carrying_capacity, 
@@ -108,7 +107,7 @@ for(dis in 1:3){
               
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean= compMean[d], scale=compScale[d])
+                                      mean=compMean[1], scale=compScale[1])
               
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
@@ -125,7 +124,7 @@ for(dis in 1:3){
                                                            fraction_harvested[t, 1], 
                                                            patch_area_m2[1]) 
               
-              population[t,1] <- population[t,1] - (population[t,1] * Disturb)
+              population[t,1] <- population[t,1] - (population[t,1] * Disturb[d])
               #escapement
               population[t, 1] <- calculate_escaped_stock_biomass(population[t, 1], 
                                                                   fraction_harvested[t, 1])
@@ -143,10 +142,10 @@ for(dis in 1:3){
               sizeclasses <- IPM$y
               IPMssds[,t] <- SSDs
               IPMlams[t] <- IPM$Lambda
-              IPMlams[t] <- IPMlams[t] - (IPMlams[t] * Disturb)
+              IPMlams[t] <- IPMlams[t] - (IPMlams[t] * Disturb[d])
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean= compMean[d], scale=compScale[d])
+                                      mean=compMean[1], scale=compScale[1])
               
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
@@ -186,7 +185,7 @@ for(dis in 1:3){
               IPMlams[t] <- IPM$Lambda
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean= compMean[d], scale=compScale[d])
+                                      mean= compMean[1], scale=compScale[1])
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
               carrying_capacity_complex[t] <- calculate_carrying_capacity_complex(carrying_capacity, 
@@ -232,7 +231,8 @@ for(dis in 1:3){
                           dComplex=complexity_deviation,
                           Lambdas=IPMlams)
 
-        name <- paste0(DistType[dis],"_V2_e.rdata")
+        name <- paste0(DistType[dis],"_V2_",
+                       as.character(Disturb[d]),".rdata")
 
         save(FullModel, file=paste0(Dir,name))
 
