@@ -28,11 +28,11 @@ fishPopSLP = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopSlp))+
                    limits = c("1", "2.56", "4.11", "5.67", 
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
-  scale_fill_gradientn(TeX("$\\frac{dP}{dt}$ over first 20 years"),
+  scale_fill_gradientn("",#TeX("$\\frac{dP}{dt}$ over first 20 years"),
                        colours= c(low="blue",
                                   middle = "orange",
                                   high="red"),
-                       limits = c(-5,25))+
+                       limits = c(-5,10))+
 
   #labs(caption =)+
   coord_fixed()+
@@ -121,7 +121,7 @@ lambdaSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaSlp))+
                    limits = c("1", "2.56", "4.11", "5.67", 
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
-  scale_fill_gradientn(TeX("$\\frac{d\\lambda}{dt}$"),
+  scale_fill_gradientn( "", #TeX("$\\frac{d\\lambda}{dt}$"),
                        colours= c(low="blue",
                                   middle = "orange",
                                   high="red"),
@@ -254,7 +254,7 @@ Plots <- list(fishPopSLP,
               complxSlp,
               complxFin,
               compDevVar,
-              compDevFin)
+              compDevFin)[5]
 
 #print(Plots)
 
@@ -267,7 +267,7 @@ NamesP <- c("fishPopSLP",
             "complxSlp",
             "complxFin",
             "compDevVar",
-            "compDevFin")
+            "compDevFin")[5]
 
 for (i in 1:length(NamesP)){
   ggsave(filename = paste0(NamesP[i], ".png"),
