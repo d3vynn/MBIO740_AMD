@@ -6,7 +6,7 @@ SimTy <- c("ComplexitySims", "DisturbanceSims")[2]
 
 dataf <- recovf <- data.frame()
 Dir <-  paste0(BaseD, SimTy, "\\", IntCp, "\\")
-ls  <- list.files(Dir)[1:31]
+ls  <- list.files(Dir)[1:90]
 for (l in 1:length(ls)){
   a <- str_split(ls[l], pattern = ".rdata")[[1]][1]
   b <- str_split(a, pattern = "_")[[1]]
@@ -39,14 +39,16 @@ for (l in 1:length(ls)){
   
 
   rs <- data.frame(DisturbanceType=b[1],
-                   Magnitude=b[3],
+                   Magnitude=b[2],
+                   ComplexType=b[3],
                    RecoveryTime=c(FishRecv,HarvRecv,LmRecv,ComRecv),
                    ResponseType=c("FishRecv","HarvRecv","LmRecv","ComRecv"))  
   
   recovf <- rbind(recovf,rs)
   
   ds <- data.frame(DisturbanceType=b[1],
-                   Magnitude=b[3],
+                   Magnitude=b[2],
+                   ComplexType=b[3],
                    FishPop=FullModel$FishPopulation[,1],
                    FishHav=FullModel$Harvest[,1],
                    Lambs=FullModel$Lambdas,
@@ -57,5 +59,5 @@ for (l in 1:length(ls)){
   dataf <- rbind(dataf, ds)
   }
 
-save(dataf, file=paste0(BaseD,"Disturbance_full_range.rdata"))
-save(recovf, file=paste0(BaseD,"Disturbance_times_range.rdata"))
+save(dataf, file=paste0(BaseD,"Disturbance_full_range_AllComplx.rdata"))
+save(recovf, file=paste0(BaseD,"Disturbance_times_range_AllComplx.rdata"))

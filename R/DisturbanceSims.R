@@ -19,9 +19,9 @@ CType <- c("LowIntComp", "IntIntComp")
 v <- 1
 Dir <- paste0(BaseD, "\\DisturbanceSims\\", CType[v], "\\")
 
-ComplexVer <- c("Logit", "Exp", "Log")[1]
-compMean   <- c(7,50,90)[2]
-compScale  <- c(2,10,20)[2]
+ComplexVer <- c("Logit", "Exp", "Log")
+compMean   <- c(7,50,90)
+compScale  <- c(2,10,20)
 FishPress  <- seq(0, 0.5, length.out = 10)[3]
 RecVals    <- seq(2, 13, length.out = 10)[5]
 HName      <- as.character(round(FishPress,2))
@@ -44,6 +44,7 @@ DistTime  <- 51
 Disturb <- round(seq(0.1,0.95,length.out = 10),2)
 DistType <- c("Hurricane", "Disease", "Bleaching")
 
+for(cx in 1:3){
 for(dis in 1:3){
   for(d in 1:length(Disturb)){
     for(c in 1:length(RecVals)){
@@ -107,7 +108,7 @@ for(dis in 1:3){
               
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean=compMean[1], scale=compScale[1])
+                                      mean=compMean[cx], scale=compScale[cx])
               
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
@@ -145,7 +146,7 @@ for(dis in 1:3){
               IPMlams[t] <- IPMlams[t] - (IPMlams[t] * Disturb[d])
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean=compMean[1], scale=compScale[1])
+                                      mean=compMean[cx], scale=compScale[cx])
               
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
@@ -185,7 +186,7 @@ for(dis in 1:3){
               IPMlams[t] <- IPM$Lambda
               
               Comp[t] <- ComplexityV2(IPMlams[t], SSDs, sizeclasses, 
-                                      mean= compMean[1], scale=compScale[1])
+                                      mean= compMean[cx], scale=compScale[cx])
               complexity_deviation[t] <- Comp[t] / Comp[t-1] 
               
               carrying_capacity_complex[t] <- calculate_carrying_capacity_complex(carrying_capacity, 
@@ -231,8 +232,8 @@ for(dis in 1:3){
                           dComplex=complexity_deviation,
                           Lambdas=IPMlams)
 
-        name <- paste0(DistType[dis],"_V2_",
-                       as.character(Disturb[d]),".rdata")
+        name <- paste0(DistType[dis],"_",
+                       as.character(Disturb[d]),"_",ComplexVer[cx],".rdata")
 
         save(FullModel, file=paste0(Dir,name))
 
@@ -243,6 +244,7 @@ for(dis in 1:3){
   }
 
 
+}
 }
 
 

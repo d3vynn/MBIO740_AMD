@@ -270,7 +270,7 @@ NamesP <- c("fishPopSLP",
             "compDevFin")[5]
 
 for (i in 1:length(NamesP)){
-  ggsave(filename = paste0(NamesP[i], ".png"),
+  ggsave(filename = paste0(NamesP[i],"_logit", ".png"),
          path = paste0(BaseD, "Figures\\"),
          plot = Plots[[i]],
          width = 5,
