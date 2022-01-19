@@ -12,7 +12,7 @@ load(file=paste0(BaseD,ns))
 #V2
 V2dats  <- dataf[dataf$CompVers == "V2",]
 V2datsL <- V2dats[V2dats$IntComp == "LowIntComp",]
-V2datsL <- V2datsL[V2datsL$CompType=="Logit",]
+V2datsL <- V2datsL[V2datsL$CompType=="Log",]
 Rvals  <- unique(V2datsL$RecVal)
 Effvs  <- unique(V2dats$FishingEffrt)
 CompT  <- unique(V2dats$CompType)
@@ -29,9 +29,9 @@ fishPopSLP = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopSlp))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn("",#TeX("$\\frac{dP}{dt}$ over first 20 years"),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours= c(low="#2128D0", #"#8B32E6"
+                                  middle = "#CAC6C9",
+                                  high="#FF7503"),
                        limits = c(-5,10))+
 
   #labs(caption =)+
@@ -53,9 +53,9 @@ fishPopFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=fishPopFin))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX("Fish Pop at $t=100$"),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours= c(low="#2128D0", #"#8B32E6"
+                                  middle = "#CAC6C9",
+                                  high="#FF7503"), #
                        limits = c(0,400))+
   #labs(caption =)+
   coord_fixed()+
@@ -76,9 +76,9 @@ harvestSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestSlp))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(-2,1))+
   #labs(caption =)+
   coord_fixed()+
@@ -98,9 +98,9 @@ HarvestFIN = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=harvestFin))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours= c(low="#2128D0", #"#8B32E6"
+                                  middle = "#CAC6C9",
+                                  high="#FF7503"),
                        limits = c(10^-10,10^2))+
   #labs(caption =)+
   coord_fixed()+
@@ -122,9 +122,9 @@ lambdaSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaSlp))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn( "", #TeX("$\\frac{d\\lambda}{dt}$"),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours= c(low="#2128D0", #"#8B32E6"
+                                  middle = "#CAC6C9",
+                                  high="#FF7503"),
                        limits = c(-0.03,0.05))+
   #labs(caption =)+
   #coord_fixed()+
@@ -144,9 +144,9 @@ lambdaFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=lambdaFin))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(10^-10,4))+
   #labs(caption =)+
   coord_fixed()+
@@ -166,9 +166,9 @@ complxSlp = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxSlp))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(-0.007,0.025))+
   #labs(caption =)+
   coord_fixed()+
@@ -188,9 +188,9 @@ complxFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=complxFin))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(-10^-4,0.5))+
   #labs(caption =)+
   coord_fixed()+
@@ -210,9 +210,9 @@ compDevVar = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevVar))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(0,80))+
   #labs(caption =)+
   coord_fixed()+
@@ -233,9 +233,9 @@ compDevFin = ggplot(V2datsL, aes(x=RecVal, y=FishingEffrt, fill=compDevFin))+
                               "7.22", "8.78", "10.33", "11.89", 
                               "13.44", "15")) +
   scale_fill_gradientn(TeX(""),
-                       colours= c(low="blue",
-                                  middle = "orange",
-                                  high="red"),
+                       colours=c(low="#2128D0", #"#8B32E6"
+                                 middle = "#CAC6C9",
+                                 high="#FF7503"),
                        limits = c(0.8,1.05))+
   #labs(caption =)+
   coord_fixed()+
@@ -254,7 +254,7 @@ Plots <- list(fishPopSLP,
               complxSlp,
               complxFin,
               compDevVar,
-              compDevFin)[5]
+              compDevFin)
 
 #print(Plots)
 
@@ -267,10 +267,10 @@ NamesP <- c("fishPopSLP",
             "complxSlp",
             "complxFin",
             "compDevVar",
-            "compDevFin")[5]
+            "compDevFin")
 
 for (i in 1:length(NamesP)){
-  ggsave(filename = paste0(NamesP[i],"_logit", ".png"),
+  ggsave(filename = paste0(NamesP[i],"_log", ".png"),
          path = paste0(BaseD, "Figures\\"),
          plot = Plots[[i]],
          width = 5,

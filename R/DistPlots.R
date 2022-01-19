@@ -4,13 +4,31 @@ library(stringr)
 library(dplyr)
 library(reshape2)
 
+
+
 BaseD <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\"
 ls    <- list.files(BaseD)
 
 load(paste0(BaseD,ls[11]))
-load(paste0(BaseD,ls[17]))
+load(paste0(BaseD,ls[18]))
 
-recovf[]
+# ###### Color hack!
+# COLORS <- c("#e84935",
+#             "#850f92",
+#             "#5a85e8")
+# 
+# DTs <- recovf$DisturbanceType
+# CCs <- rep(0, length.out=length(DTs))
+# 
+# CCs[which(DTs == "Bleaching")] <- COLORS[1]
+# CCs[which(DTs == "Disease")] <- COLORS[2]
+# CCs[which(DTs == "Hurricane")] <- COLORS[3]
+# 
+# recovf <- cbind(recovf, data.frame(Colors=CCs))
+
+Resp <- c("Fish Biomass", "Harvest Biomass",
+          "Coral Population Growth Rate",
+          "Benthic Complexity")
 CX_type <- c("Logit", "Exp", "Log")
 
 for (cx in 1:3){
@@ -18,29 +36,34 @@ for (cx in 1:3){
 Recovery = ggplot(DataUse, aes(y=RecoveryTime, 
                  x=DisturbanceType,
                  fill=DisturbanceType), 
-     colour = "black")+
+                 colour = "black")+
   xlab("")+
   ylab("Recovery Time (years)")+
-geom_boxplot()+
+  geom_boxplot()+
+  scale_fill_manual(values= c("Bleaching"= "#e84935",
+                              "Disease"= "#850f92",
+                              "Hurricane"="#5a85e8"))+
 #geom_point(aes(y=,x=DisturbanceType,colour=DisturbanceType,fill=DisturbanceType))+
-facet_wrap(~ResponseType, nrow = 2, ncol = 2,
+facet_wrap(~ResponseType, nrow = 1, ncol = 4,
            labeller=labeller(ResponseType = 
                                c("ComRecv" = "Benthic Complexity",
                                  "FishRecv" = "Fish Biomass",
                                  "HarvRecv" = "Harvest Biomass",
                                  "LmRecv" = "Coral Population Growth Rate")))+
-scale_fill_discrete(name="")+
+#scale_fill_discrete(name="")+
 theme_classic()
 
 ggsave(filename = paste0("DisturbanceRecovery_",CX_type[cx],".png"),
        path = paste0(BaseD, "Figures\\"),
        plot = Recovery,
-       width = 10,
-       height = 7)
+       width = 15,
+       height = 4.5)
 
 }
+
 load(file=paste0(BaseD,"Disturbance_LongMeanErrs_AllCX.rdata"))
-r <- 3
+load(file=paste0(BaseD,"YMaxValues.rdata"))
+
 for(r in 1:4){
   for(cx in 1:3){
     daData <- FullData[FullData$CXtype == CX_type[cx],]
@@ -49,13 +72,19 @@ ResponsePlt = ggplot(daData %>% filter(Response == Resp[r]),
               aes(y=MEAN, x=Time,
                   colour=Disturbance,
                   group=Disturbance))+
+  scale_color_manual(values = c("Bleaching"= "#e84935",
+                               "Disease"= "#850f92",
+                               "Hurricane"="#5a85e8"))+
   geom_ribbon(aes(ymin=LOWER,ymax=UPPER, 
                   fill=Disturbance),  
               linetype=0,  alpha=0.2)+
+  scale_fill_manual(values = c("Bleaching"= "#e84935",
+                               "Disease"= "#850f92",
+                               "Hurricane"="#5a85e8"))+
   ylab(Resp[r])+
   xlab("Time (years)")+
   xlim(c(5,100))+
-  #ylim(c(0,0.75))+
+  ylim(c(0,yMaxVals[r,cx]))+
   geom_line(size=1.06)+
   theme_classic()
 
