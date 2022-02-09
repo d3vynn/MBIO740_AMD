@@ -3,9 +3,88 @@
 library(ggplot2)
 library(latex2exp)
 
-BaseD <- "C:\\Users\\Devynn\\Documents\\GitHub\\MBIO740_AMD\\output\\"
+BaseD <- "~/Documents/GitHub/MBIO740_AMD/output/"
 ns    <- "ComplexitySims_meatmapData_fixed.rdata"
 load(file=paste0(BaseD,ns))
+
+####
+# plot 3 rec values, or each of the 10 rec values separately
+# then bar plots of the lam slope for the fishing pressures
+
+# should maybe also make sure to try one that is separated/binned with high middle, low
+dataf2 <- dataf[dataf$CompType == "Logit",]
+
+FP <- unique(dataf2$FishingEffrt)[1:10]
+RV <- unique(dataf2$RecVal)
+
+for(r in 1:10){
+  a <- dataf2[dataf2$RecVal== RV[r],]
+  b <- a[a$FishingEffrt == FP,]
+  
+  RV_allFP <- ggplot(b, aes(y=lambdaSlp,x=FishingEffrt,fill=lambdaSlp))+
+              geom_col()+
+              scale_x_discrete(TeX("Fishing Pressure"),
+                               limits=c("0","0.06", "0.11", "0.17",
+                                        "0.22", "0.28", "0.33","0.39",
+                                        "0.44", "0.5")) +
+              scale_fill_gradientn("",colours= c(low="#9909F7", #"#8B32E6"
+                                                 middle = "#E6F30C",
+                                                 high="#F70A0A"),
+                                   limit=c(-0.027, 0.05))+
+              ylim(c(-0.027,0.05))+
+              ylab(TeX("Slope of Population Growth Rate $\\Delta\\lambda / \\Delta t$"))+
+    # scale_x_discrete(TeX("Coral Recruitment parameter"),
+    #                  limits = c("1", "2.56", "4.11", "5.67", 
+    #                             "7.22", "8.78", "10.33", "11.89", 
+    #                             "13.44", "15")) +
+              theme_classic()
+  
+  ggsave(filename = paste0("SepByRV_rec", RV[r], ".png"),
+         path = paste0(BaseD, "Figures/"),
+         plot = RV_allFP,
+         width = 5,
+         height = 5)
+  
+  
+  
+}
+
+for(f in 1:10){
+  a <- dataf2[dataf2$FishingEffrt == FP[f],]
+  
+  FP_allRV <- ggplot(a, aes(y=lambdaSlp,x=RecVal,fill=lambdaSlp))+
+    geom_col()+
+    scale_x_discrete(TeX("Coral Recruitment parameter"),
+                     limits = c("1", "2.56", "4.11", "5.67",
+                                "7.22", "8.78", "10.33", "11.89",
+                                "13.44", "15")) +
+    scale_fill_gradientn("",colours= c(low="#9909F7", #"#8B32E6"
+                                       middle = "#E6F30C",
+                                       high="#F70A0A"),
+                         limit=c(-0.027, 0.05))+
+    ylim(c(-0.027,0.05))+
+    ylab(TeX("Slope of Population Growth Rate $\\Delta\\lambda / \\Delta t$"))+
+
+    theme_classic()
+  
+  ggsave(filename = paste0("SepByFP_FP", FP[f], ".png"),
+         path = paste0(BaseD, "Figures/"),
+         plot = FP_allRV,
+         width = 5,
+         height = 5)
+  
+  
+  
+}
+
+
+
+
+
+
+
+
+
 
 # Version 1 vrs Version 2
 
